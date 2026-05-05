@@ -1,18 +1,51 @@
 .cell {
-  width: 30px;
-  height: 30px;
-  background-color: none; 
-  border: 1px solid #ccc;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #1e3a5f;
+  cursor: pointer;
+  transition: background 0.15s;
+  box-sizing: border-box;
+  position: relative;
 }
-
-.cell.missed { background-color: #a0c4ff; } 
-.cell.hit { background-color: #ffadad; }    
-.cell.destroyed { background-color: #ff0000; } 
-
-.cell.radar-highlight {
-  outline: 2px solid yellow;
+ 
+/* Estados */
+.cell-water { background-color: #0e2d4a; }
+.cell-water:hover { background-color: #1e4d7a; }
+ 
+.cell-ship  { background-color: #334155; border-color: #475569; }
+ 
+.cell-miss  { background-color: #374151; cursor: default; }
+.cell-miss::after {
+  content: '•';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-size: 20px;
+  line-height: 1;
 }
-.cell-ship {
-  background-color: #334155;
-  border-color: #475569;
+ 
+.cell-hit { background-color: #dc2626; cursor: default; }
+.cell-hit::after {
+  content: '✕';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fca5a5;
+  font-size: 14px;
+}
+ 
+.cell-sunk { background-color: #7f1d1d; cursor: default; }
+.cell-sunk::after {
+  content: '💥';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }

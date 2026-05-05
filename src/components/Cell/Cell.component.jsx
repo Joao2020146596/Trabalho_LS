@@ -1,10 +1,10 @@
 import React from "react";
 import "./Cell.css";
 
-function Cell({ hasShip, onClick }) {
+function Cell({ state, onClick }) {
   return (
     <div
-      className={`cell ${hasShip ? "cell-ship" : ""}`}
+      className={`cell cell-${state}`}
       onClick={onClick}
     />
   );
