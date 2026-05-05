@@ -1,0 +1,14 @@
+.cell {
+  width: 30px;
+  height: 30px;
+  background-color: none; 
+  border: 1px solid #ccc;
+}
+
+.cell.missed { background-color: #a0c4ff; } 
+.cell.hit { background-color: #ffadad; }    
+.cell.destroyed { background-color: #ff0000; } 
+
+.cell.radar-highlight {
+  outline: 2px solid yellow;
+}

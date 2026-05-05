@@ -1,0 +1,122 @@
+.setup-container {
+  background: rgba(10, 25, 45, 0.95);
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.setup-title {
+  color: #ffd700;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  padding-bottom: 15px;
+}
+
+/* Seletor de Orientação */
+.orientation-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.opt-btn {
+  background: #333;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+
+.opt-btn.active {
+  background: #ffd700;
+  color: #000;
+  border-color: #fff;
+  font-weight: bold;
+}
+
+/* Lista de Navios */
+.fleet-list {
+  display: flex;
+  flex-direction: column; /* Coloca os navios lado a lado */
+  justify-content: space-around; /* Distribui o espaço entre eles */
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.instruction {
+  font-size: 0.85rem;
+  color: #a0c4ff;
+  margin-bottom: 10px;
+}
+
+.ship-item {
+  display: flex;
+  flex-direction: row; /* Alinha os navios lado a lado */
+  justify-content: space-between; /* Distribui uniformemente */
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.ship-item:hover {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+/* Representação visual dos segmentos do navio */
+.ship-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1; /* Garante que cada navio ocupe espaço igual */
+}
+
+.ship-segment {
+  width: 28px;
+  height: 28px;
+  background-color: #444;
+  border: 1px solid #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.ship-item:first-child .ship-segment {
+  background: #777; /* Destaque para o navio maior */
+}
+
+.setup-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.ship-name {
+  font-size: 0.65rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap; /* Impede que o nome quebre a linha */
+}
+
+.hidden:not(.gameStarted) {
+  display: none;
+}

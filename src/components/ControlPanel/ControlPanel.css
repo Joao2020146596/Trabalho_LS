@@ -1,0 +1,200 @@
+.dashboard {
+  background-color: rgb(10, 25, 45); /* Azul profundo para combinar com o mar */
+  border: 2px solid rgb(0, 255, 255); /* Borda ciano estilo radar */
+  border-radius: 8px;
+  padding: 20px;
+  width: 280px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaço entre as secções */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.hiden:not(.gameStarted) {
+  display: none;
+}
+
+.stats-list {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  margin: 0;
+}
+
+.stats-list dt {
+  color: #a0c4ff;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  align-self: center;
+}
+
+.stats-list dd {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif; /* Se usares uma fonte digital */
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: right;
+}
+/*tempo*/
+#gameTime {
+  color: #00ff00; /* Verde inicial */
+}
+
+/* Podes aplicar esta classe via React quando tempo < 5s */
+.low-time {
+  color: #ff4d4d !important;
+  animation: blink 1s infinite;
+}
+
+/*fuel*/
+.fuel-container {
+  width: 100%;
+  height: 15px;
+  background: #222;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.fuel-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8800, #ffcc00);
+  transition: width 0.3s ease-in-out; /* Suaviza a descida de -5 e subida de +10 */
+}
+
+#fuelLevel {
+  color: #ffcc00;
+}
+
+/*radar*/
+.radar-button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Estado: Disponível (Mérito atingido) */
+.radar-button.available {
+  background-color: #00c3ff;
+  color: #fff;
+  box-shadow: 0 0 10px #00c3ff;
+}
+
+.radar-button.available:hover {
+  background-color: #008ebc;
+  transform: scale(1.05);
+}
+
+/* Estado: Indisponível */
+.radar-button.unavailable {
+  background-color: #333;
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #444;
+}
+
+/* Estilo para o Input de Nome */
+.name-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #00c3ff;
+  color: white;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.name-input::placeholder {
+  color: #666;
+}
+
+/* Botão Iniciar Batalha */
+.start-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745; /* Verde para iniciar */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #1e7e34;
+}
+
+
+
+.start-button:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.start-button:disabled {
+  background-color: #555;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Identificação do Jogador no Topo */
+.player-info {
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.player-name {
+  color: #ffd700; /* Dourado para o nome do jogador */
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.setup-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 15px;
+  
+}
+
+.information_game{
+  border-top: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+
+.view-bot-button {
+  background-color: rgba(255, 0, 0, 0.15); /* Fundo avermelhado subtil (perigo) */
+  color: #ff4d4d; /* Texto vermelho claro */
+  border: 1px solid #ff4d4d;
+  padding: 10px 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
+}
+
+.view-bot-button:hover {
+  background-color: #ff4d4d;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+  transform: translateY(-1px);
+}
+
+.view-bot-button .icon {
+  font-size: 1.2rem;
+}
