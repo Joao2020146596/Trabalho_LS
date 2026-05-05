@@ -12,3 +12,7 @@
 .cell.radar-highlight {
   outline: 2px solid yellow;
 }
+.cell-ship {
+  background-color: #334155;
+  border-color: #475569;
+}
