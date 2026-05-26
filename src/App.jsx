@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ControlPanel, Board, Header, Setup } from "./components/";
 import './assets/App.css'
-
+ 
+// ─── Constantes ───────────────────────────────────────────────────────────────
+const TURN_TIME      = 15;
+const INITIAL_FUEL   = 100;
+const MAX_FUEL       = 100;
+const FUEL_PER_SHOT  = 5;
+const FUEL_PENALTY   = 5;   // tempo esgotado
+const FUEL_HIT_BONUS = 10;  // por acerto
+ 
 // ─── Frota ────────────────────────────────────────────────────────────────────
 const FLEET = [
   { name: "Porta-Aviões",     size: 5 },
@@ -11,7 +19,7 @@ const FLEET = [
   { name: "Contratorpedeiro", size: 2 },
   { name: "Contratorpedeiro", size: 2 },
 ];
-
+ 
 const PREDEFINED_FLEETS = [
   [
     { name: "Porta-Aviões",     size: 5, row: 0, col: 0, orientation: "horizontal" },
@@ -38,13 +46,13 @@ const PREDEFINED_FLEETS = [
     { name: "Contratorpedeiro", size: 2, row: 8, col: 3, orientation: "horizontal" },
   ],
 ];
-
+ 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const createEmptyBoard = () =>
   Array(10).fill(null).map(() =>
     Array(10).fill(null).map(() => ({ shipId: null, hit: false, sunk: false }))
   );
-
+ 
 const placeShipOnBoard = (board, row, col, size, orientation, shipId) => {
   const nb = board.map(r => r.map(c => ({ ...c })));
   for (let i = 0; i < size; i++) {
@@ -54,7 +62,7 @@ const placeShipOnBoard = (board, row, col, size, orientation, shipId) => {
   }
   return nb;
 };
-
+ 
 const generateRandomBoard = () => {
   let board = createEmptyBoard();
   for (const ship of FLEET) {
@@ -77,14 +85,14 @@ const generateRandomBoard = () => {
   }
   return board;
 };
-
+ 
 const buildBoardFromFleet = (fleetConfig) => {
   let board = createEmptyBoard();
   for (const s of fleetConfig)
     board = placeShipOnBoard(board, s.row, s.col, s.size, s.orientation, s.name);
   return board;
 };
-
+ 
 const checkAndMarkSunk = (board, shipId) => {
   const nb = board.map(r => r.map(c => ({ ...c })));
   const allHit = nb.every(row => row.every(c => c.shipId !== shipId || c.hit));
@@ -94,29 +102,64 @@ const checkAndMarkSunk = (board, shipId) => {
         if (nb[r][c].shipId === shipId) nb[r][c].sunk = true;
   return nb;
 };
-
+ 
 const isFleetDestroyed = (board) =>
   board.every(row => row.every(c => c.shipId === null || c.hit));
-
+ 
 // ─── App ──────────────────────────────────────────────────────────────────────
 function App() {
   const [playerName, setPlayerName]     = useState("Jogador");
   const [gameStarted, setGameStarted]   = useState(false);
   const [fleetChoice, setFleetChoice]   = useState("random");
   const [showEnemyShips, setShowEnemyShips] = useState(false);
-
+ 
   const [playerBoard, setPlayerBoard]     = useState(createEmptyBoard());
   const [computerBoard, setComputerBoard] = useState(createEmptyBoard());
   const [placedShips, setPlacedShips]     = useState([]);
-
+ 
   const [selectedShip, setSelectedShip] = useState(null);
   const [orientation, setOrientation]   = useState("horizontal");
-
+ 
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [winner, setWinner]             = useState(null);
-
-  // ── Iniciar / Parar ──────────────────────────────────────────────────────────
+ 
+  // ── Cronómetro e Combustível ────────────────────────────────────────────────
+  const [timeLeft, setTimeLeft] = useState(TURN_TIME);
+  const [fuel, setFuel]         = useState(INITIAL_FUEL);
+  const timerRef                = useRef(null);
+ 
+  // Inicia o cronómetro quando é a vez do jogador
+  useEffect(() => {
+    if (!gameStarted || !isPlayerTurn || winner) return;
+ 
+    setTimeLeft(TURN_TIME); // reset a 15s no início de cada turno
+ 
+    timerRef.current = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          // Tempo esgotado — penalizar e passar turno
+          clearInterval(timerRef.current);
+          setFuel(f => {
+            const newFuel = f - FUEL_PENALTY;
+            if (newFuel <= 0) {
+              setWinner("computer"); // sem combustível = derrota
+              return 0;
+            }
+            return newFuel;
+          });
+          setIsPlayerTurn(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+ 
+    return () => clearInterval(timerRef.current);
+  }, [isPlayerTurn, gameStarted, winner]);
+ 
+  // ── Iniciar / Reiniciar ──────────────────────────────────────────────────────
   const handleGameStarted = () => {
+    clearInterval(timerRef.current);
     if (gameStarted) {
       setPlayerBoard(createEmptyBoard());
       setComputerBoard(createEmptyBoard());
@@ -124,6 +167,8 @@ function App() {
       setSelectedShip(null);
       setIsPlayerTurn(true);
       setWinner(null);
+      setTimeLeft(TURN_TIME);
+      setFuel(INITIAL_FUEL);
       setGameStarted(false);
       return;
     }
@@ -133,10 +178,12 @@ function App() {
     setComputerBoard(compBoard);
     setIsPlayerTurn(true);
     setWinner(null);
+    setTimeLeft(TURN_TIME);
+    setFuel(INITIAL_FUEL);
     setGameStarted(true);
   };
-
-  // ── Posicionar navio (antes do jogo) ─────────────────────────────────────────
+ 
+  // ── Posicionar navio ─────────────────────────────────────────────────────────
   const handlePlayerCellClick = (row, col) => {
     if (gameStarted || !selectedShip) return;
     const size = selectedShip.size;
@@ -151,21 +198,39 @@ function App() {
     setPlacedShips(prev => [...prev, selectedShip.name]);
     setSelectedShip(null);
   };
-
+ 
   // ── Tiro do jogador ──────────────────────────────────────────────────────────
   const handleEnemyCellClick = (row, col) => {
     if (!gameStarted || !isPlayerTurn || winner) return;
     if (computerBoard[row][col].hit) return;
-
+ 
+    clearInterval(timerRef.current); // para o cronómetro
+ 
+    // Desconta combustível pelo tiro
+    const newFuel = Math.min(MAX_FUEL, fuel - FUEL_PER_SHOT);
+    if (newFuel <= 0) {
+      setFuel(0);
+      setWinner("computer");
+      return;
+    }
+ 
     let nb = computerBoard.map(r => r.map(c => ({ ...c })));
     nb[row][col] = { ...nb[row][col], hit: true };
-    if (nb[row][col].shipId !== null) nb = checkAndMarkSunk(nb, nb[row][col].shipId);
+ 
+    let fuelAfterShot = newFuel;
+    if (nb[row][col].shipId !== null) {
+      nb = checkAndMarkSunk(nb, nb[row][col].shipId);
+      // Acerto: +10 combustível (máx 100)
+      fuelAfterShot = Math.min(MAX_FUEL, newFuel + FUEL_HIT_BONUS);
+    }
+ 
+    setFuel(fuelAfterShot);
     setComputerBoard(nb);
-
+ 
     if (isFleetDestroyed(nb)) { setWinner("player"); return; }
     setIsPlayerTurn(false);
   };
-
+ 
   // ── Turno do computador ──────────────────────────────────────────────────────
   useEffect(() => {
     if (!gameStarted || isPlayerTurn || winner) return;
@@ -175,19 +240,20 @@ function App() {
         for (let c = 0; c < 10; c++)
           if (!playerBoard[r][c].hit) available.push([r, c]);
       if (!available.length) return;
-
+ 
       const [r, c] = available[Math.floor(Math.random() * available.length)];
       let nb = playerBoard.map(row => row.map(cell => ({ ...cell })));
       nb[r][c] = { ...nb[r][c], hit: true };
       if (nb[r][c].shipId !== null) nb = checkAndMarkSunk(nb, nb[r][c].shipId);
       setPlayerBoard(nb);
-
+ 
       if (isFleetDestroyed(nb)) { setWinner("computer"); return; }
       setIsPlayerTurn(true);
     }, 1000);
     return () => clearTimeout(timeout);
   }, [isPlayerTurn, gameStarted, winner]);
-
+ 
+  // ─── Render ──────────────────────────────────────────────────────────────────
   return (
     <div id="container">
       <Header />
@@ -200,11 +266,14 @@ function App() {
         isPlayerTurn={isPlayerTurn}
         showEnemyShips={showEnemyShips}
         onShowEnemyShipsChange={setShowEnemyShips}
+        timeLeft={timeLeft}
+        fuel={fuel}
       />
-
+ 
       {winner && (
-        <div className="winner-banner">
+        <div className={`winner-banner ${winner === "player" ? "win" : "lose"}`}>
           {winner === "player" ? `🏆 Vitória, ${playerName}!` : "💀 O computador venceu!"}
+          {fuel === 0 && winner === "computer" && " (Sem combustível!)"}
         </div>
       )}
       {gameStarted && !winner && (
@@ -212,7 +281,7 @@ function App() {
           {isPlayerTurn ? "🎯 A tua vez — ataca o tabuleiro inimigo!" : "⏳ O computador está a pensar..."}
         </div>
       )}
-
+ 
       <div id="game-boards-container">
         <Board
           title={`Frota de ${playerName}`}
@@ -227,7 +296,7 @@ function App() {
           onCellClick={handleEnemyCellClick}
         />
       </div>
-
+ 
       <Setup
         gameStarted={gameStarted}
         selectedShip={selectedShip}
@@ -239,5 +308,5 @@ function App() {
     </div>
   );
 }
-
+ 
 export default App;

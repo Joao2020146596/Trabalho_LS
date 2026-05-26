@@ -4,8 +4,10 @@ import "./ControlPanel.css";
 function ControlPanel({
   gameStarted, onGameStart, onNameChange,
   fleetChoice, onFleetChoiceChange,
-  isPlayerTurn,
-  showEnemyShips, onShowEnemyShipsChange
+  //isPlayerTurn,
+  showEnemyShips, onShowEnemyShipsChange,
+  timeLeft,   
+  fuel 
 }) {
   const gameStartedClass = gameStarted ? " gameStarted" : "";
 
@@ -45,9 +47,9 @@ function ControlPanel({
       <div className={"hidden information_game" + gameStartedClass}>
         <dl className="stats-list">
           <dt>Tempo:</dt>
-          <dd id="gameTime">15s</dd>
-          <dt>Combustível:</dt>
-          <dd id="fuelLevel">100</dd>
+            <dd id="gameTime">{timeLeft}s</dd>   
+            <dt>Combustível:</dt>
+            <dd id="fuelLevel">{fuel}</dd> 
         </dl>
 
         {/* Debug: mostrar frota inimiga */}
