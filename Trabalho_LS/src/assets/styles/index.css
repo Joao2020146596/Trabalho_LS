@@ -1,0 +1,22 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+body { background: #f4f7f6; color: #333; display: flex; justify-content: center; padding: 20px; }
+#container { max-width: 900px; width: 100%; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+header, footer { text-align: center; padding: 10px; background: #2c3e50; color: white; border-radius: 5px; }
+.subtitle { font-size: 1rem; opacity: 0.8; }
+.btn-primary { background: #27ae60; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+.btn-primary:disabled { background: #95a5a6; cursor: not-allowed; }
+.setup-panel, .control-panel { background: #ecf0f1; padding: 15px; border-radius: 8px; margin: 15px 0; display: flex; gap: 15px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.game-area { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.board-grid { display: grid; grid-template-columns: repeat(10, 30px); gap: 2px; margin-top: 10px; }
+.board-disabled { opacity: 0.6; pointer-events: none; }
+.cell { width: 30px; height: 30px; border: 1px solid #bdc3c7; cursor: pointer; transition: 0.2s; }
+.cell:hover { filter: brightness(0.9); }
+.cell-water { background: #3498db; }
+.cell-miss { background: #95a5a6; }
+.cell-hit { background: #e67e22; }
+.cell-sunk { background: #c0392b; }
+.cell-debug { background: #2ecc71 !important; }
+.cell-my-ship { background: #34495e; }
+.cell-radar-target { box-shadow: inset 0 0 0 3px #f1c40f, 0 0 8px #f1c40f; z-index: 10; position: relative; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal-content { background: white; padding: 30px; border-radius: 10px; text-align: center; min-width: 300px; }
