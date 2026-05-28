@@ -1,3 +1,10 @@
+# Batalha Naval Avançada LS 25/26
+Trabalho realizado por: João Mateus, Miguel André e Miguel Simões
+## Como executar:
+1. Abrir o terminal na pasta do projeto.
+2. Executar `npm install` para instalar as dependências.
+3. Executar `npm run dev` para iniciar o jogo.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
