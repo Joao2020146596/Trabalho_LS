@@ -1,7 +1,14 @@
 import { BOARD_SIZE, CELL_STATES, FLEET } from '../constants/index.js';
 
-export const createEmptyBoard = () => 
-  Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill({ hasShip: false, shipId: null, state: CELL_STATES.WATER }));
+export const createEmptyBoard = () => {
+  return Array(BOARD_SIZE).fill(null).map(() =>
+    Array(BOARD_SIZE).fill(null).map(() => ({ 
+      hasShip: false, 
+      shipId: null, 
+      state: CELL_STATES.WATER 
+    }))
+  );
+};
 
 // [DEFESA: Posicionamento da Frota (Validações) - 15%]
 // Valida limites do tabuleiro e colisões num único bloco.
