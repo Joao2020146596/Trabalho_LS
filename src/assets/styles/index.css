@@ -20,3 +20,12 @@ header, footer { text-align: center; padding: 10px; background: #2c3e50; color: 
 .cell-radar-target { box-shadow: inset 0 0 0 3px #f1c40f, 0 0 8px #f1c40f; z-index: 10; position: relative; }
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 100; }
 .modal-content { background: white; padding: 30px; border-radius: 10px; text-align: center; min-width: 300px; }
+.ship-preview { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 5px; margin-bottom: 5px; background: white; border: 2px solid #bdc3c7; color: #2c3e50; transition: all 0.2s ease;}
+.ship-preview.active { background: #2c3e50; border-color: #27ae60; color: white; }
+.ship-preview.placed { background: #f0f0f0; opacity: 0.5; color: #999; }
+.ship-preview-squares { display: flex; gap: 2px;}
+.ship-square { width: 16px; height: 16px; border-radius: 2px; background: #34495e; border: 1px solid rgba(0,0,0,0.2);}
+.ship-preview.active .ship-square { background: #27ae60; }
+.ship-preview.placed .ship-square { background: #95a5a6; }
+.ship-name { font-size: 0.78rem; font-weight: bold; }
+.ship-status { margin-left: auto; font-size: 0.9rem;}
