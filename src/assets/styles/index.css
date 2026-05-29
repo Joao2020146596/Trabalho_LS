@@ -29,3 +29,5 @@ header, footer { text-align: center; padding: 10px; background: #2c3e50; color: 
 .ship-preview.placed .ship-square { background: #95a5a6; }
 .ship-name { font-size: 0.78rem; font-weight: bold; }
 .ship-status { margin-left: auto; font-size: 0.9rem;}
+.cell-preview-valid { background: #2ecc71 !important; opacity: 0.8; }
+.cell-preview-invalid { background: #e74c3c !important; opacity: 0.8; }
