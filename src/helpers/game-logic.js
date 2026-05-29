@@ -10,8 +10,8 @@ export const createEmptyBoard = () => {
   );
 };
 
-// [DEFESA: Posicionamento da Frota (Validações) - 15%]
-// Valida limites do tabuleiro e colisões num único bloco.
+// Defesa Posicionamento da Frota/Validações (15%)
+// Validamos limites do tabuleiro e colisões num único bloco
 export const isValidPlacement = (board, r, c, size, isHorizontal) => {
   if (isHorizontal && c + size > BOARD_SIZE) return false;
   if (!isHorizontal && r + size > BOARD_SIZE) return false;
@@ -46,11 +46,11 @@ export const generateRandomFleet = () => {
   return board;
 };
 
-// [DEFESA: Configuração do PC - Frotas Pré-definidas - 10%]
+// Defesa Configuração do PC Frotas Pré-definidas (10%)
 export const generateFixedFleet = (type) => {
   const board = createEmptyBoard();
-  // Simulação de configuração fixa válida. Na prática, distribuiríamos coordenadas exatas.
-  // Para simplificar e garantir validade, usamos um seed fixo ou posições manuais conhecidas.
+  // Simulação de configuração fixa válida
+  // Para garantir validade, usamos um seed fixo ou posições manuais conhecidas
   const configs = {
     fixed1: [ {r:0, c:0, h:true, s:FLEET[0]}, {r:2, c:0, h:true, s:FLEET[1]}, {r:4, c:0, h:true, s:FLEET[2]}, {r:6, c:0, h:true, s:FLEET[3]}, {r:8, c:0, h:true, s:FLEET[4]}, {r:8, c:5, h:true, s:FLEET[5]} ],
     fixed2: [ {r:0, c:9, h:false, s:FLEET[0]}, {r:0, c:7, h:false, s:FLEET[1]}, {r:0, c:5, h:false, s:FLEET[2]}, {r:5, c:5, h:false, s:FLEET[3]}, {r:9, c:0, h:true, s:FLEET[4]}, {r:9, c:3, h:true, s:FLEET[5]} ],
@@ -61,7 +61,7 @@ export const generateFixedFleet = (type) => {
   return newBoard;
 };
 
-// [DEFESA: Inteligência do Computador Nível Avançado - 17.5%]
+// Defesa Inteligência do Computador Nível Avançado (17.5%)
 export const calculatePCMove = (board, aiState) => {
   let r, c;
   const isValidTarget = (row, col) => row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE && board[row][col].state === CELL_STATES.WATER;
@@ -84,7 +84,7 @@ export const calculatePCMove = (board, aiState) => {
   return { r, c, aiState };
 };
 
-// [DEFESA: Radar Inteligente - 10%] Identifica área 2x2 com pelo menos um navio vivo.
+// Defesa Radar Inteligente (10%) Identifica área 2x2 com pelo menos uma célula do navio vivo
 export const getRadarArea = (board) => {
   for (let r = 0; r < BOARD_SIZE - 1; r++) {
     for (let c = 0; c < BOARD_SIZE - 1; c++) {

@@ -9,10 +9,10 @@ export default function SetupPanel({ onComplete }) {
   const [shipsToPlace, setShipsToPlace] = useState(FLEET);
   const [isHorizontal, setIsHorizontal] = useState(true);
   const [pcConfig, setPcConfig] = useState('random');
-  const [hoverCell, setHoverCell] = useState(null);// para desenhar a preview do navio guarda a celula do houver
+  const [hoverCell, setHoverCell] = useState(null); // para desenhar a preview do navio guarda a celula do houver
 
   //elemeto visual
-//funcao navios laterais
+  //funcao navios laterais
   function ShipPreview({ ship, isActive, isPlaced }) {
   let stateClass = '';
   if (isActive) stateClass = 'active';
@@ -30,28 +30,25 @@ export default function SetupPanel({ onComplete }) {
         {isPlaced ? 'Colocado' : isActive ? 'A colocar' : 'Por colocar'}
       </span>
     </div>
-  );
-}
+  );}
 
   const currentShip = shipsToPlace[0];
 
-//previews navios no tbuleiro
-const getPreviewCells = (r, c) => {
-  if (!currentShip || r === null) return new Set();
-  const cells = new Set();
-  // tamanho do navio
-  for (let i = 0; i < currentShip.size; i++) {
-    // calcula posicao navio horizontal ou vertical
-    const pr = isHorizontal ? r : r + i;
-    const pc = isHorizontal ? c + i : c;
-    // guarda a cel do preview
-    cells.add(`${pr}-${pc}`);
+  const getPreviewCells = (r, c) => { // previews navios no tbuleiro
+    if (!currentShip || r === null) return new Set();
+    const cells = new Set();
+    // tamanho do navio
+    for (let i = 0; i < currentShip.size; i++) {
+      const pr = isHorizontal ? r : r + i;
+      const pc = isHorizontal ? c + i : c; // calcula posicao navio horizontal ou vertical
+      cells.add(`${pr}-${pc}`); // guarda a cel do preview
   }
 
   return cells;
 };
-  const previewCells = hoverCell ? getPreviewCells(hoverCell.r, hoverCell.c) : new Set();//preview navios
-  const isValidHover = hoverCell ? isValidPlacement(board, hoverCell.r, hoverCell.c, currentShip?.size, isHorizontal) : false;//validar se pode por naviospreview
+
+  const previewCells = hoverCell ? getPreviewCells(hoverCell.r, hoverCell.c) : new Set(); // preview navios
+  const isValidHover = hoverCell ? isValidPlacement(board, hoverCell.r, hoverCell.c, currentShip?.size, isHorizontal) : false; // validar se pode por naviospreview
 
   const handleCellClick = (r, c) => {
     if (!currentShip) return;
@@ -73,10 +70,10 @@ const getPreviewCells = (r, c) => {
     <div className="setup-panel">
       <div>
         <h2>Quartel-General</h2>
-        {/* [DEFESA: Setup Inicial - 7.5%] O input é controlado e a validação impede o início de jogo sem nome. */}
+        {/* Defesa Setup Inicial (7.5%) O input é controlado e a validação impede o início de jogo sem nome */}
         <input type="text" placeholder="Insere o teu Nome" value={playerName} onChange={e => setPlayerName(e.target.value)} style={{marginBottom: '15px', padding: '5px'}}/>
         
-        {/* [DEFESA: Configuração do Computador - 10%] Menu select para as 3 frotas pre-definidas. */}
+        {/* Defesa Configuração do Computador (10%) Menu select para as 3 frotas pre-definidas */}
         <div>
            <label>Frota Inimiga: </label>
            <select value={pcConfig} onChange={e => setPcConfig(e.target.value)}>

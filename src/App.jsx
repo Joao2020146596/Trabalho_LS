@@ -19,7 +19,7 @@ export default function App() {
   const turnStartRef = useRef(0);
   const aiStateRef = useRef({ mode: 'random', firstHit: null, lastHit: null });
 
-  // [DEFESA: Gestão de Combustível - 10%] Monitorização constante que força o fim de jogo.
+  // Defesa Gestão de Combustível (10%) Monitorização constante que força o fim de jogo
   useEffect(() => {
     if (fuel <= 0 && gameState === 'playing') { setWinner('Computador'); setGameState('end'); }
   }, [fuel, gameState]);
@@ -42,7 +42,7 @@ export default function App() {
     if (newBoard[r][c].hasShip) {
       newBoard[r][c].state = CELL_STATES.HIT;
       newFuel = Math.min(100, newFuel + 10);
-      if (timeTaken < 3) setRadarAvailable(true); // Ativa mérito do Radar
+      if (timeTaken < 3) setRadarAvailable(true); // Ativa mérito do Radar (jogada acertada em menos de 3 segundos garante o uso)
       
       const sId = newBoard[r][c].shipId;
       const isSunk = newBoard.flat().filter(cell => cell.shipId === sId).every(cell => cell.state === CELL_STATES.HIT);
@@ -99,7 +99,7 @@ export default function App() {
     }
   }, [turn, gameState]);
 
-  // [DEFESA: Fim de Jogo - Botão de Restart - 5%] Reset de estado via React puro sem recarregar a página.
+  // Defesa Fim de Jogo Botão de Restart (5%) Reset de estado via React puro sem recarregar a página
   const handleRestart = () => {
     setGameState('setup'); setFuel(INITIAL_FUEL); setMoves(0);
     setRadarAvailable(false); setRadarArea(null); setTurn('player');

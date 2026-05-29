@@ -1,7 +1,7 @@
 import React from 'react';
 import Cell from '../cell/cell.component';
 
-// [DEFESA: Aspeto Gráfico e Estados - 10%] O Tabuleiro renderiza células passando o estado visual e destaque de radar.
+// Defesa Aspeto Gráfico e Estados (10%) O Tabuleiro renderiza células passando o estado visual e destaque de radar
 export default function GameBoard({ 
   board, title, onCellClick, disabled, isDebug, isMyBoard, radarArea,
   onCellHover, onBoardLeave, previewCells = new Set(), isValidPreview 
